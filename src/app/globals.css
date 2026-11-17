@@ -17,17 +17,3 @@ body {
   background: var(--color-paper);
   color: var(--color-ink);
 }
-
-/* Exercise book: ruled lines + margin line */
-.ruled {
-  background-color: #12263f;
-  background-image:
-    linear-gradient(
-      to right,
-      transparent 3.25rem,
-      rgba(246, 201, 69, 0.6) 3.25rem,
-      rgba(246, 201, 69, 0.6) calc(3.25rem + 2px),
-      transparent calc(3.25rem + 2px)
-    ),
-    repeating-linear-gradient(to bottom, transparent 0 31px, rgba(255, 255, 255, 0.08) 31px 32px);
-}

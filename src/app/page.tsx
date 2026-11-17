@@ -2,23 +2,25 @@ import ParentForm from "@/components/ParentForm"
 
 export default function Home() {
   return (
-    <main className="mx-auto grid min-h-screen w-full max-w-6xl gap-6 px-4 py-6 sm:px-6 lg:grid-cols-[22rem_1fr] lg:gap-8 lg:py-12">
-      <aside className="ruled rounded-3xl p-8 pl-20 text-white lg:sticky lg:top-12 lg:self-start lg:p-10 lg:pl-20">
-        <h1 className="font-display text-3xl font-extrabold leading-tight sm:text-4xl">
-          Book exchange registration
-        </h1>
-        <p className="mt-4 text-slate-200">
-          Fill in this form once for your family. It only takes a couple of minutes.
-        </p>
-        <ul className="mt-8 space-y-3 text-sm text-slate-200">
-          <li>Add up to 10 students in one form.</li>
-          <li>Only the organisers can see your details.</li>
-        </ul>
-      </aside>
+    <main className="min-h-screen pb-16">
+      <header className="bg-ink text-white">
+        <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6 sm:py-14">
+          <h1 className="font-display text-3xl font-extrabold tracking-tight sm:text-5xl">
+            Book exchange registration form
+          </h1>
+          <div className="mt-4 h-1 w-16 rounded-full bg-pencil" />
+          <p className="mt-4 max-w-2xl text-base text-slate-200 sm:text-lg">
+            Please fill in your details and add every student who is taking part. All fields are
+            required.
+          </p>
+        </div>
+      </header>
 
-      <section className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm sm:p-10">
-        <ParentForm />
-      </section>
+      <div className="mx-auto -mt-6 max-w-5xl px-4 sm:-mt-8 sm:px-6">
+        <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:p-8">
+          <ParentForm />
+        </div>
+      </div>
     </main>
   )
 }

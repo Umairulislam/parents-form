@@ -76,12 +76,12 @@ function Section({
   children: React.ReactNode
 }) {
   return (
-    <section className="space-y-5 py-8 first:pt-0 last:pb-0">
-      <div>
-        <h2 className="font-display text-xl font-bold">{title}</h2>
-        {description && <p className="mt-1 text-sm text-slate-600">{description}</p>}
+    <section className="overflow-hidden rounded-2xl border border-slate-200">
+      <div className="border-b border-slate-200 bg-slate-50 px-5 py-3.5 sm:px-6">
+        <h2 className="font-display text-lg font-bold">{title}</h2>
+        {description && <p className="mt-0.5 text-sm text-slate-600">{description}</p>}
       </div>
-      {children}
+      <div className="p-5 sm:p-6">{children}</div>
     </section>
   )
 }
@@ -223,7 +223,7 @@ export default function ParentForm() {
 
   return (
     <form onSubmit={onSubmit} noValidate>
-      <div className="divide-y divide-slate-200">
+      <div className="space-y-6">
         <Section title="Parent details" description="We will use these to contact you.">
           <div className="grid gap-5 md:grid-cols-2">
             <Field label="Parent's name" error={errors.parent_name}>
