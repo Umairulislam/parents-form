@@ -318,7 +318,7 @@ export default function ParentForm() {
               {BOOK_OPTIONS.map((o) => (
                 <label
                   key={o.value}
-                  className="flex cursor-pointer items-center gap-3 rounded-xl border border-slate-300 bg-white px-4 py-4 transition hover:border-slate-400 has-[:checked]:border-accent has-[:checked]:bg-accent/5 has-[:checked]:ring-2 has-[:checked]:ring-accent/20 has-[:focus-visible]:ring-4 has-[:focus-visible]:ring-accent/25"
+                  className="flex cursor-pointer items-center gap-3 rounded-xl border border-slate-300 bg-white px-4 py-4 transition hover:border-slate-400 has-checked:border-accent has-checked:bg-accent/5 has-[:checked]:ring-2 has-checked:ring-accent/20 has-focus-visible:ring-4 has-focus-visible:ring-accent/25"
                 >
                   <input
                     type="radio"
@@ -343,7 +343,7 @@ export default function ParentForm() {
       </div>
 
       {/* Honeypot: hidden from people, bots fill it */}
-      <div className="absolute -left-[9999px]" aria-hidden="true">
+      <div className="absolute left-[-9999px]" aria-hidden="true">
         <input
           tabIndex={-1}
           autoComplete="off"
