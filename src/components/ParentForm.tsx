@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState, useTransition } from "react"
-import { AREAS, BOOK_OPTIONS } from "@/lib/constants"
+import { AREAS, TOWNS, BOOK_OPTIONS, CLASS_LEVELS } from "@/lib/constants"
 import { submitForm } from "@/lib/actions"
 
 type Student = {
@@ -29,6 +29,7 @@ const emptyValues = {
   parent_name: "",
   contact_number: "",
   home_address: "",
+  town: "", // new
   area: "",
   book_exchange: "",
   company_url: "", // honeypot
@@ -82,6 +83,54 @@ function Section({
       </div>
       {children}
     </section>
+  )
+}
+
+function SelectField({
+  label,
+  placeholder,
+  options,
+  value,
+  error,
+  onChange,
+}: {
+  label: string
+  placeholder: string
+  options: readonly string[]
+  value: string
+  error?: string
+  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void
+}) {
+  return (
+    <Field label={label} error={error}>
+      <div className="relative">
+        <select
+          className={`${inputClass(!!error)} appearance-none pr-10`}
+          aria-invalid={!!error}
+          value={value}
+          onChange={onChange}
+        >
+          <option value="">{placeholder}</option>
+          {options.map((o) => (
+            <option key={o} value={o}>
+              {o}
+            </option>
+          ))}
+        </select>
+        <svg
+          viewBox="0 0 24 24"
+          className="pointer-events-none absolute top-1/2 right-3 size-5 -translate-y-1/2 text-slate-500"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-hidden="true"
+        >
+          <path d="M6 9l6 6 6-6" />
+        </svg>
+      </div>
+    </Field>
   )
 }
 
@@ -212,35 +261,23 @@ export default function ParentForm() {
               />
             </Field>
 
-            <Field label="Area" error={errors.area}>
-              <div className="relative">
-                <select
-                  className={`${inputClass(!!errors.area)} appearance-none pr-10`}
-                  aria-invalid={!!errors.area}
-                  value={values.area}
-                  onChange={setValue("area")}
-                >
-                  <option value="">Choose your area</option>
-                  {AREAS.map((a) => (
-                    <option key={a.value} value={a.value}>
-                      {a.label}
-                    </option>
-                  ))}
-                </select>
-                <svg
-                  viewBox="0 0 24 24"
-                  className="pointer-events-none absolute top-1/2 right-3 size-5 -translate-y-1/2 text-slate-500"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  aria-hidden="true"
-                >
-                  <path d="M6 9l6 6 6-6" />
-                </svg>
-              </div>
-            </Field>
+            <SelectField
+              label="Area"
+              placeholder="Choose your area"
+              options={AREAS}
+              value={values.area}
+              error={errors.area}
+              onChange={setValue("area")}
+            />
+
+            <SelectField
+              label="Town"
+              placeholder="Choose your town"
+              options={TOWNS}
+              value={values.town}
+              error={errors.town}
+              onChange={setValue("town")}
+            />
           </div>
         </Section>
 
@@ -261,7 +298,7 @@ export default function ParentForm() {
                   )}
                 </div>
 
-                <div className="grid gap-4 md:grid-cols-[2fr_1fr_2fr]">
+                <div className="grid gap-4 md:grid-cols-2">
                   <Field label="Student's name" error={errors[`students.${i}.student_name`]}>
                     <input
                       className={inputClass(!!errors[`students.${i}.student_name`])}
@@ -271,17 +308,20 @@ export default function ParentForm() {
                     />
                   </Field>
 
-                  <Field label="Current class" error={errors[`students.${i}.current_class`]}>
-                    <input
-                      className={inputClass(!!errors[`students.${i}.current_class`])}
-                      aria-invalid={!!errors[`students.${i}.current_class`]}
-                      placeholder="e.g. 5"
-                      value={s.current_class}
-                      onChange={(e) => updateStudent(s.id, "current_class", e.target.value)}
-                    />
-                  </Field>
+                  <SelectField
+                    label="Current class"
+                    placeholder="Choose class"
+                    options={CLASS_LEVELS}
+                    value={s.current_class}
+                    error={errors[`students.${i}.current_class`]}
+                    onChange={(e) => updateStudent(s.id, "current_class", e.target.value)}
+                  />
 
-                  <Field label="School name" error={errors[`students.${i}.school_name`]}>
+                  <Field
+                    label="School / Institute name"
+                    error={errors[`students.${i}.school_name`]}
+                    className="md:col-span-2"
+                  >
                     <input
                       className={inputClass(!!errors[`students.${i}.school_name`])}
                       aria-invalid={!!errors[`students.${i}.school_name`]}
@@ -318,7 +358,7 @@ export default function ParentForm() {
               {BOOK_OPTIONS.map((o) => (
                 <label
                   key={o.value}
-                  className="flex cursor-pointer items-center gap-3 rounded-xl border border-slate-300 bg-white px-4 py-4 transition hover:border-slate-400 has-checked:border-accent has-checked:bg-accent/5 has-[:checked]:ring-2 has-checked:ring-accent/20 has-focus-visible:ring-4 has-focus-visible:ring-accent/25"
+                  className="flex cursor-pointer items-center gap-3 rounded-xl border border-slate-300 bg-white px-4 py-4 transition hover:border-slate-400 has-checked:border-accent has-checked:bg-accent/5 has-checked:ring-2 has-checked:ring-accent/20 has-focus-visible:ring-4 has-focus-visible:ring-accent/25"
                 >
                   <input
                     type="radio"

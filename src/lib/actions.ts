@@ -30,6 +30,7 @@ export async function submitForm(input: unknown): Promise<FormResult> {
     p_parent_name: d.parent_name,
     p_contact_number: d.contact_number,
     p_home_address: d.home_address,
+    p_town: d.town,
     p_area: d.area,
     p_book_exchange: d.book_exchange,
     p_students: d.students,

@@ -1,13 +1,12 @@
 import { z } from "zod"
-import { AREAS, BOOK_OPTIONS } from "./constants"
+import { AREAS, TOWNS, CLASS_LEVELS, BOOK_OPTIONS } from "./constants"
 
-const areaValues = AREAS.map((a) => a.value) as [string, ...string[]]
 const bookValues = BOOK_OPTIONS.map((b) => b.value) as [string, ...string[]]
 
 export const studentSchema = z.object({
   student_name: z.string().trim().min(2, "Enter the student's name").max(100),
-  current_class: z.string().trim().min(1, "Enter the current class").max(50),
-  school_name: z.string().trim().min(2, "Enter the school name").max(150),
+  current_class: z.enum(CLASS_LEVELS, { message: "Choose the current class" }),
+  school_name: z.string().trim().min(2, "Enter the school or institute name").max(150),
 })
 
 export const formSchema = z.object({
@@ -17,7 +16,8 @@ export const formSchema = z.object({
     .trim()
     .regex(/^\+?[\d\s-]{10,16}$/, "Enter a valid phone number"),
   home_address: z.string().trim().min(5, "Enter the home address").max(300),
-  area: z.enum(areaValues, { message: "Choose an area" }),
+  town: z.enum(TOWNS, { message: "Choose a town" }),
+  area: z.enum(AREAS, { message: "Choose an area" }),
   book_exchange: z.enum(bookValues, { message: "Choose an option" }),
   students: z
     .array(studentSchema)
