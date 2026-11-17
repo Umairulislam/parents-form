@@ -1,69 +1,24 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+import ParentForm from "@/components/ParentForm"
 
 export default function Home() {
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>
-            To get started, edit the{" "}
-            <code className={styles.code}>page.tsx</code> file.
-          </h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
-  );
+    <main className="mx-auto grid min-h-screen w-full max-w-6xl gap-6 px-4 py-6 sm:px-6 lg:grid-cols-[22rem_1fr] lg:gap-8 lg:py-12">
+      <aside className="ruled rounded-3xl p-8 pl-20 text-white lg:sticky lg:top-12 lg:self-start lg:p-10 lg:pl-20">
+        <h1 className="font-display text-3xl font-extrabold leading-tight sm:text-4xl">
+          Book exchange registration
+        </h1>
+        <p className="mt-4 text-slate-200">
+          Fill in this form once for your family. It only takes a couple of minutes.
+        </p>
+        <ul className="mt-8 space-y-3 text-sm text-slate-200">
+          <li>Add up to 10 students in one form.</li>
+          <li>Only the organisers can see your details.</li>
+        </ul>
+      </aside>
+
+      <section className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm sm:p-10">
+        <ParentForm />
+      </section>
+    </main>
+  )
 }
