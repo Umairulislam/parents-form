@@ -11,7 +11,7 @@ function Row({ label, value }: { label: string; value: string }) {
 }
 
 export default function IdCard({ card }: { card: CardData }) {
-  const location = [card.town, card.area].filter(Boolean).join(", ")
+  const location = [card.zila, card.town].filter(Boolean).join(", ")
 
   return (
     <div className="id-card flex h-[86mm] w-[54mm] flex-col overflow-hidden rounded-[3mm] border border-slate-300 bg-white">
@@ -31,7 +31,7 @@ export default function IdCard({ card }: { card: CardData }) {
         <div className="space-y-[1.6mm] border-t border-slate-200 pt-[2mm]">
           <Row label="Parent" value={card.parent_name} />
           <Row label="Contact" value={card.contact_number} />
-          <Row label="Town and area" value={location} />
+          <Row label="Zila and town / cant" value={location} />
         </div>
 
         <div className="flex flex-col items-center">

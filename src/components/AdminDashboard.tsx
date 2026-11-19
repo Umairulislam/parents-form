@@ -2,7 +2,7 @@
 
 import { useMemo, useState, useTransition } from "react"
 import { useRouter } from "next/navigation"
-import { AREAS, TOWNS, CLASS_LEVELS, BOOK_OPTIONS } from "@/lib/constants"
+import { ZILAS, ALL_TOWNS, townsForZila, CLASS_LEVELS, BOOK_OPTIONS } from "@/lib/constants"
 import { formatCardId, MAX_CARDS_PER_PRINT } from "@/lib/card"
 import type { CardData, Student, Submission } from "@/lib/types"
 import PrintCards from "./PrintCards"
@@ -13,7 +13,7 @@ type Sort = "newest" | "oldest" | "name"
 type Filters = {
   q: string
   town: string
-  area: string
+  zila: string
   book: string
   level: string
   sort: Sort
@@ -22,7 +22,7 @@ type Filters = {
 const defaultFilters: Filters = {
   q: "",
   town: "",
-  area: "",
+  zila: "",
   book: "",
   level: "",
   sort: "newest",
@@ -63,7 +63,7 @@ function cardFor(r: Submission, s: Student): CardData {
     parent_name: r.parent_name,
     contact_number: r.contact_number,
     town: r.town ?? "",
-    area: r.area,
+    zila: r.zila,
   }
 }
 
@@ -97,8 +97,8 @@ function exportCsv(rows: Submission[]) {
     "Parent name",
     "Contact number",
     "Home address",
-    "Town",
-    "Area",
+    "Zila",
+    "Town / Cant",
     "Books",
     "Card ID",
     "Student name",
@@ -115,8 +115,8 @@ function exportCsv(rows: Submission[]) {
         r.parent_name,
         r.contact_number,
         r.home_address,
+        r.zila,
         r.town ?? "",
-        r.area,
         books,
         formatCardId(s.card_number),
         s.student_name,
@@ -206,8 +206,13 @@ export default function AdminDashboard({ rows, today }: { rows: Submission[]; to
     setPage(1)
   }
 
+  function changeZila(value: string) {
+    setFilters((f) => ({ ...f, zila: value, town: "" }))
+    setPage(1)
+  }
+
   const isFiltered = Boolean(
-    filters.q || filters.town || filters.area || filters.book || filters.level
+    filters.q || filters.town || filters.zila || filters.book || filters.level
   )
 
   // Build the search text once per row, not on every key press
@@ -220,7 +225,7 @@ export default function AdminDashboard({ rows, today }: { rows: Submission[]; to
           row.contact_number,
           row.home_address,
           row.town ?? "",
-          row.area,
+          row.zila,
           ...row.students.flatMap((s) => [
             s.student_name,
             s.school_name,
@@ -241,7 +246,7 @@ export default function AdminDashboard({ rows, today }: { rows: Submission[]; to
     const out = indexed
       .filter(({ row, text, digits }) => {
         if (filters.town && row.town !== filters.town) return false
-        if (filters.area && row.area !== filters.area) return false
+        if (filters.zila && row.zila !== filters.zila) return false
         if (filters.book && row.book_exchange !== filters.book) return false
         if (filters.level && !row.students.some((s) => s.current_class === filters.level))
           return false
@@ -372,18 +377,18 @@ export default function AdminDashboard({ rows, today }: { rows: Submission[]; to
 
         <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
           <FilterSelect
-            label="Town"
-            allLabel="All towns"
-            value={filters.town}
-            options={toOptions(TOWNS)}
-            onChange={(v) => update("town", v)}
+            label="Zila"
+            allLabel="All zilas"
+            value={filters.zila}
+            options={toOptions(ZILAS)}
+            onChange={changeZila}
           />
           <FilterSelect
-            label="Area"
-            allLabel="All areas"
-            value={filters.area}
-            options={toOptions(AREAS)}
-            onChange={(v) => update("area", v)}
+            label="Town / Cant"
+            allLabel="All towns / cants"
+            value={filters.town}
+            options={toOptions(filters.zila ? townsForZila(filters.zila) : ALL_TOWNS)}
+            onChange={(v) => update("town", v)}
           />
           <FilterSelect
             label="Student's class"
@@ -525,7 +530,7 @@ export default function AdminDashboard({ rows, today }: { rows: Submission[]; to
                     Contact
                   </th>
                   <th scope="col" className="px-5 py-3 font-semibold">
-                    Town and area
+                    Zila and town / cant
                   </th>
                   <th scope="col" className="px-5 py-3 font-semibold">
                     Students
@@ -576,8 +581,8 @@ export default function AdminDashboard({ rows, today }: { rows: Submission[]; to
                         </a>
                       </td>
                       <td className="px-5 py-4">
-                        <p>{r.town || "Not set"}</p>
-                        <p className="text-slate-500">{r.area}</p>
+                        <p>{r.zila}</p>
+                        <p className="text-slate-500">{r.town || "Not set"}</p>
                       </td>
                       <td className="px-5 py-4">
                         <ul className="space-y-2">

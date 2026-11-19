@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState, useTransition } from "react"
-import { AREAS, TOWNS, BOOK_OPTIONS, CLASS_LEVELS } from "@/lib/constants"
+import { ZILAS, townsForZila, CLASS_LEVELS, BOOK_OPTIONS } from "@/lib/constants"
 import { submitForm } from "@/lib/actions"
 
 type Student = {
@@ -29,8 +29,8 @@ const emptyValues = {
   parent_name: "",
   contact_number: "",
   home_address: "",
-  town: "", // new
-  area: "",
+  zila: "",
+  town: "",
   book_exchange: "",
   company_url: "", // honeypot
 }
@@ -262,22 +262,27 @@ export default function ParentForm() {
             </Field>
 
             <SelectField
-              label="Area"
-              placeholder="Choose your area"
-              options={AREAS}
-              value={values.area}
-              error={errors.area}
-              onChange={setValue("area")}
+              label="Zila"
+              placeholder="Choose your zila"
+              options={ZILAS}
+              value={values.zila}
+              error={errors.zila}
+              onChange={(e) =>
+                // Changing the zila clears the town, so an old town is never kept
+                setValues((v) => ({ ...v, zila: e.target.value, town: "" }))
+              }
             />
 
-            <SelectField
-              label="Town"
-              placeholder="Choose your town"
-              options={TOWNS}
-              value={values.town}
-              error={errors.town}
-              onChange={setValue("town")}
-            />
+            {values.zila && (
+              <SelectField
+                label="Town / Cant"
+                placeholder="Choose your town / cant"
+                options={townsForZila(values.zila)}
+                value={values.town}
+                error={errors.town}
+                onChange={setValue("town")}
+              />
+            )}
           </div>
         </Section>
 

@@ -12,7 +12,7 @@ export type Submission = {
   contact_number: string
   home_address: string
   town: string | null // old test rows may have no town
-  area: string
+  zila: string
   book_exchange: "exchange" | "given"
   created_at: string
   created_label: string // e.g. "17 Nov 2026, 3:45 pm" (Karachi time)
@@ -27,5 +27,5 @@ export type CardData = {
   parent_name: string
   contact_number: string
   town: string
-  area: string
+  zila: string
 }

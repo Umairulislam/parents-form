@@ -1,5 +1,5 @@
 import { z } from "zod"
-import { AREAS, TOWNS, CLASS_LEVELS, BOOK_OPTIONS } from "./constants"
+import { ZILAS, townsForZila, CLASS_LEVELS, BOOK_OPTIONS } from "./constants"
 
 const bookValues = BOOK_OPTIONS.map((b) => b.value) as [string, ...string[]]
 
@@ -9,19 +9,29 @@ export const studentSchema = z.object({
   school_name: z.string().trim().min(2, "Enter the school or institute name").max(150),
 })
 
-export const formSchema = z.object({
-  parent_name: z.string().trim().min(2, "Enter the parent's name").max(100),
-  contact_number: z
-    .string()
-    .trim()
-    .regex(/^\+?[\d\s-]{10,16}$/, "Enter a valid phone number"),
-  home_address: z.string().trim().min(5, "Enter the home address").max(300),
-  town: z.enum(TOWNS, { message: "Choose a town" }),
-  area: z.enum(AREAS, { message: "Choose an area" }),
-  book_exchange: z.enum(bookValues, { message: "Choose an option" }),
-  students: z
-    .array(studentSchema)
-    .min(1, "Add at least one student")
-    .max(10, "Maximum 10 students"),
-  company_url: z.string().optional(), // honeypot
-})
+export const formSchema = z
+  .object({
+    parent_name: z.string().trim().min(2, "Enter the parent's name").max(100),
+    contact_number: z
+      .string()
+      .trim()
+      .regex(/^\+?[\d\s-]{10,16}$/, "Enter a valid phone number"),
+    home_address: z.string().trim().min(5, "Enter the home address").max(300),
+    zila: z.enum(ZILAS, { message: "Choose a zila" }),
+    town: z.string().trim().min(1, "Choose a town / cant"),
+    book_exchange: z.enum(bookValues, { message: "Choose an option" }),
+    students: z
+      .array(studentSchema)
+      .min(1, "Add at least one student")
+      .max(10, "Maximum 10 students"),
+    company_url: z.string().optional(), // honeypot
+  })
+  .superRefine((d, ctx) => {
+    if (d.town && !townsForZila(d.zila).includes(d.town)) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["town"],
+        message: "Choose a town / cant from the list",
+      })
+    }
+  })
