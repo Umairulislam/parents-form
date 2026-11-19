@@ -3,6 +3,7 @@ export type Student = {
   student_name: string
   current_class: string
   school_name: string
+  card_number: number
 }
 
 export type Submission = {
@@ -17,4 +18,14 @@ export type Submission = {
   created_label: string // e.g. "17 Nov 2026, 3:45 pm" (Karachi time)
   created_day: string // e.g. "2026-11-17" (Karachi time)
   students: Student[]
+}
+
+export type CardData = {
+  card_id: string
+  student_name: string
+  current_class: string
+  parent_name: string
+  contact_number: string
+  town: string
+  area: string
 }

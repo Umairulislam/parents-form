@@ -17,3 +17,15 @@ body {
   background: var(--color-paper);
   color: var(--color-ink);
 }
+
+@media print {
+  html,
+  body {
+    background: #fff !important;
+  }
+  .id-card,
+  .id-card * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}

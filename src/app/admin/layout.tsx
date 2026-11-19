@@ -6,5 +6,6 @@ export const metadata: Metadata = {
 }
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
-  return children
+  // print:hidden hides the dashboard when printing the ID cards
+  return <div className="print:hidden">{children}</div>
 }

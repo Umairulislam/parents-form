@@ -27,7 +27,7 @@ async function loadSubmissions(supabase: Awaited<ReturnType<typeof createClient>
     const { data, error } = await supabase
       .from("submissions")
       .select(
-        "id, parent_name, contact_number, home_address, town, area, book_exchange, created_at, students(id, student_name, current_class, school_name)"
+        "id, parent_name, contact_number, home_address, town, area, book_exchange, created_at, students(id, student_name, current_class, school_name, card_number)"
       )
       .order("created_at", { ascending: false })
       .order("id")
@@ -44,6 +44,7 @@ async function loadSubmissions(supabase: Awaited<ReturnType<typeof createClient>
     const date = new Date(r.created_at)
     return {
       ...r,
+      students: [...r.students].sort((a, b) => a.card_number - b.card_number),
       created_label: labelFormat.format(date),
       created_day: dayFormat.format(date),
     }
